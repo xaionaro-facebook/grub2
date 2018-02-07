@@ -60,7 +60,7 @@ link_layer_find_entry (const grub_net_network_level_address_t *proto,
     return NULL;
   for (i = 0; i < LINK_LAYER_CACHE_SIZE; i++)
     {
-      if (card->link_layer_table[i].avail == 1 
+      if (card->link_layer_table[i].avail == 1
 	  && grub_net_addr_cmp (&card->link_layer_table[i].nl_address,
 				proto) == 0)
 	return &card->link_layer_table[i];
@@ -175,7 +175,7 @@ grub_net_link_layer_resolve (struct grub_net_network_level_interface *inf,
       *hw_addr = entry->ll_address;
       return GRUB_ERR_NONE;
     }
-  return grub_error (GRUB_ERR_TIMEOUT, 
+  return grub_error (GRUB_ERR_TIMEOUT,
 		     N_("timeout: could not resolve hardware address"));
 }
 
@@ -232,7 +232,7 @@ static void
 grub_net_network_level_interface_register (struct grub_net_network_level_interface *inter);
 
 static struct grub_net_network_level_interface *
-grub_net_add_addr_real (char *name, 
+grub_net_add_addr_real (char *name,
 			struct grub_net_card *card,
 			const grub_net_network_level_address_t *addr,
 			const grub_net_link_level_address_t *hwaddress,
@@ -260,7 +260,7 @@ grub_net_add_addr_real (char *name,
 }
 
 struct grub_net_network_level_interface *
-grub_net_add_addr (const char *name, 
+grub_net_add_addr (const char *name,
 		   struct grub_net_card *card,
 		   const grub_net_network_level_address_t *addr,
 		   const grub_net_link_level_address_t *hwaddress,
@@ -268,7 +268,7 @@ grub_net_add_addr (const char *name,
 {
   char *name_dup = grub_strdup (name);
   struct grub_net_network_level_interface *ret;
- 
+
   if (!name_dup)
     return NULL;
   ret = grub_net_add_addr_real (name_dup, card, addr, hwaddress, flags);
@@ -510,7 +510,7 @@ match_net (const grub_net_network_level_netaddress_t *net,
 	    mask[0] = 0xffffffffffffffffULL << (64 - net->ipv6.masksize);
 	    mask[1] = 0;
 	  }
-	else 
+	else
 	  {
 	    mask[0] = 0xffffffffffffffffULL;
 	    mask[1] = 0xffffffffffffffffULL << (128 - net->ipv6.masksize);
@@ -709,7 +709,7 @@ grub_cmd_deladdr (struct grub_command *cmd __attribute__ ((unused)),
   grub_free (inter->name);
   grub_free (inter);
 
-  return GRUB_ERR_NONE;  
+  return GRUB_ERR_NONE;
 }
 
 void
@@ -730,14 +730,14 @@ grub_net_addr_to_str (const grub_net_network_level_address_t *target, char *buf)
 	  {
 	    grub_snprintf (ptr, 6, "%" PRIxGRUB_UINT64_T ":",
 			   (n >> (48 - 16 * i)) & 0xffff);
-	    ptr += grub_strlen (ptr); 
+	    ptr += grub_strlen (ptr);
 	  }
 	n  = grub_be_to_cpu64 (target->ipv6[1]);
 	for (i = 0; i < 3; i++)
 	  {
 	    grub_snprintf (ptr, 6, "%" PRIxGRUB_UINT64_T ":",
 			   (n >> (48 - 16 * i)) & 0xffff);
-	    ptr += grub_strlen (ptr); 
+	    ptr += grub_strlen (ptr);
 	  }
 	grub_snprintf (ptr, 5, "%" PRIxGRUB_UINT64_T, n & 0xffff);
 	return;
@@ -925,7 +925,7 @@ grub_net_network_level_interface_register (struct grub_net_network_level_interfa
       return;
     for (ptr = name; *ptr; ptr++)
       if (*ptr == ':')
-	*ptr = '_';    
+	*ptr = '_';
     grub_env_set (name, buf);
     grub_register_variable_hook (name, 0, hwaddr_set_env);
     grub_env_export (name);
@@ -942,7 +942,7 @@ grub_net_network_level_interface_register (struct grub_net_network_level_interfa
       return;
     for (ptr = name; *ptr; ptr++)
       if (*ptr == ':')
-	*ptr = '_';    
+	*ptr = '_';
     grub_env_set (name, buf);
     grub_register_variable_hook (name, 0, addr_set_env);
     grub_env_export (name);
@@ -1017,12 +1017,12 @@ grub_cmd_addaddr (struct grub_command *cmd __attribute__ ((unused)),
 
   if (argc != 3)
     return grub_error (GRUB_ERR_BAD_ARGUMENT, N_("three arguments expected"));
-  
+
   FOR_NET_CARDS (card)
     if (grub_strcmp (card->name, args[1]) == 0)
       break;
   if (card == NULL)
-    return grub_error (GRUB_ERR_BAD_ARGUMENT, N_("card not found")); 
+    return grub_error (GRUB_ERR_BAD_ARGUMENT, N_("card not found"));
 
   err = grub_net_resolve_address (args[2], &addr);
   if (err)
@@ -1052,7 +1052,7 @@ grub_cmd_delroute (struct grub_command *cmd __attribute__ ((unused)),
 
   if (argc != 1)
     return grub_error (GRUB_ERR_BAD_ARGUMENT, N_("one argument expected"));
-  
+
   for (prev = &grub_net_routes, route = *prev; route; prev = &((*prev)->next),
 	 route = *prev)
     if (grub_strcmp (route->name, args[0]) == 0)
@@ -1133,7 +1133,7 @@ grub_cmd_addroute (struct grub_command *cmd __attribute__ ((unused)),
 		       N_("three arguments expected"));
 
   grub_net_resolve_net_address  (args[1], &target);
-  
+
   if (grub_strcmp (args[2], "gw") == 0 && argc >= 4)
     {
       grub_err_t err;
@@ -1213,10 +1213,10 @@ grub_cmd_listroutes (struct grub_command *cmd __attribute__ ((unused)),
     if (route->is_gateway)
       {
 	grub_printf ("gw ");
-	print_address (&route->gw);	
+	print_address (&route->gw);
       }
     else
-      grub_printf ("%s", route->interface->name);      
+      grub_printf ("%s", route->interface->name);
     grub_printf ("\n");
   }
   return GRUB_ERR_NONE;
@@ -1263,7 +1263,7 @@ grub_net_open_real (const char *name)
   grub_net_app_level_t proto;
   const char *protname, *server;
   grub_size_t protnamelen;
-  int try;
+  int try, port = 0;
 
   if (grub_strncmp (name, "pxe:", sizeof ("pxe:") - 1) == 0)
     {
@@ -1280,7 +1280,14 @@ grub_net_open_real (const char *name)
   else
     {
       const char *comma;
+      char *comma2;
       comma = grub_strchr (name, ',');
+      comma2 = grub_strchr (comma + 1, ',');
+      if (comma2)
+	{
+	  port = (int) grub_strtol(comma2 + 1, NULL, 10);
+	  *comma2 = '\0';
+	}
       if (comma)
 	{
 	  protnamelen = comma - name;
@@ -1299,7 +1306,7 @@ grub_net_open_real (const char *name)
       grub_error (GRUB_ERR_NET_BAD_ADDRESS,
 		  N_("no server is specified"));
       return NULL;
-    }  
+    }
 
   for (try = 0; try < 2; try++)
     {
@@ -1313,6 +1320,7 @@ grub_net_open_real (const char *name)
 	      return NULL;
 	    ret->protocol = proto;
 	    ret->server = grub_strdup (server);
+	    ret->port = port;
 	    if (!ret->server)
 	      {
 		grub_free (ret);
@@ -1500,7 +1508,7 @@ receive_packets (struct grub_net_card *card, int *stop_condition)
   while (received < 100)
     {
       /* Maybe should be better have a fixed number of packets for each card
-	 and just mark them as used and not used.  */ 
+	 and just mark them as used and not used.  */
       struct grub_net_buff *nb;
 
       if (received > 10 && stop_condition && *stop_condition)
@@ -1661,7 +1669,7 @@ have_ahead (struct grub_file *file)
   return ret;
 }
 
-static grub_err_t 
+static grub_err_t
 grub_net_seek_real (struct grub_file *file, grub_off_t offset)
 {
   if (offset == file->device->net->offset)
@@ -1730,7 +1738,7 @@ static grub_err_t
 grub_net_fini_hw (int noreturn __attribute__ ((unused)))
 {
   struct grub_net_card *card;
-  FOR_NET_CARDS (card) 
+  FOR_NET_CARDS (card)
     if (card->opened)
       {
 	if (card->driver->close)
