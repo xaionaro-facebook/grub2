@@ -21,6 +21,9 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#ifdef __linux__
+#include <sys/sysmacros.h>
+#endif
 #include <assert.h>
 #include <fcntl.h>
 #include <unistd.h>

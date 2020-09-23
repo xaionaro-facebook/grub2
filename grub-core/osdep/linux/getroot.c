@@ -21,6 +21,7 @@
 
 #include <sys/stat.h>
 #include <sys/types.h>
+#include <sys/sysmacros.h>
 #include <assert.h>
 #include <fcntl.h>
 #include <unistd.h>
